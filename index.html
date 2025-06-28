@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Analisador Sintático - Gramática Livre de Contexto</title>
+  <link rel="stylesheet" href="css/default.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+  <header>
+    <div class="content">
+      <h1>Analisador Sintático - João Binotto</h1>
+    </div>
+  </header>
+
+  <main id="main" class="content">
+    <section class="input-section">
+      <h2>Insira a sentença para análise</h2>
+      <input
+        id="sentenca"
+        type="text"
+        placeholder="Digite a sentença aqui..."
+        onDrop="return false"
+        oninput="initAutomaton()" />
+      <div class="btn-group">
+        <button id="tokenGenerate" onclick="geraSentenca()" class="btn-default">Gerar Sentença</button>
+        <button id="passoPasso" onclick="passoPasso()" class="btn-default" style="display:none;">Passo a Passo</button>
+        <button id="resolucaoDireta" onclick="resolucaoDireta()" class="btn-default" style="display:none;">Resolução Direta</button>
+      </div>
+      <p id="sentence"></p>
+    </section>
+
+    <section class="grammar-info">
+      <h2>Gramática Livre de Contexto</h2>
+      <div class="rules-container">
+        <div class="rule-block">
+          <h3>Gramática</h3>
+          <p>S → aBb</p>
+          <p>A → bCa | c</p>
+          <p>B → bA | c</p>
+          <p>C → a | ε</p>
+        </div>
+
+        <div class="rule-block">
+          <h3>First</h3>
+          <p>S = {a}</p>
+          <p>A = {b, c}</p>
+          <p>B = {b, c}</p>
+          <p>C = {a, ε}</p>
+        </div>
+
+        <div class="rule-block">
+          <h3>Follow</h3>
+          <p>S = {$}</p>
+          <p>A = {a, b, c}</p>
+          <p>B = {b, c, a}</p>
+          <p>C = {a, b}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="parsing-table-section">
+      <h2>Tabela de Análise Preditiva</h2>
+      <table id="parsingTable" class="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>a</th>
+            <th>b</th>
+            <th>c</th>
+            <th>$</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>S</td>
+            <td>S → aBb</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>A</td>
+            <td></td>
+            <td>A → bCa</td>
+            <td>A → c</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>B</td>
+            <td></td>
+            <td>B → bA</td>
+            <td>B → c</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>C</td>
+            <td>C → a</td>
+            <td></td>
+            <td>C → ε</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="resolution-section">
+      <h2>Resolução da Análise</h2>
+      <div class="table-wrapper">
+        <table id="resolucao" class="table"></table>
+        <div id="anchor"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p style="text-align:center; padding: 15px 0;">© 2025 João Binotto</p>
+  </footer>
+
+  <script src="js/default.js"></script>
+</body>
+</html>
